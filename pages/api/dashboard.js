@@ -1,6 +1,8 @@
-// 提供前端 Dashboard 資料（從 Vercel KV 讀取）
+// 提供前端 Dashboard 資料（從 Upstash Redis 讀取）
 
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -8,7 +10,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const data = await kv.get('dashboard');
+    const data = await redis.get('dashboard');
 
     if (!data) {
       return res.status(404).json({
@@ -17,11 +19,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // 快取 5 分鐘，過期後在背景重新驗證
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=60');
     return res.status(200).json(data);
   } catch (err) {
-    console.error('[dashboard] KV read error:', err);
+    console.error('[dashboard] Redis read error:', err);
     return res.status(500).json({ error: 'Failed to read data from storage' });
   }
 }
