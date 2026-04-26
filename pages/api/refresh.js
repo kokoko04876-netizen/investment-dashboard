@@ -2,7 +2,7 @@
 
 import { Redis } from '@upstash/redis';
 import { ASSETS } from '../../lib/assets';
-import { fetchYahoo, fetchCoinGecko } from '../../lib/fetchers';
+import { fetchYahoo, fetchBinance } from '../../lib/fetchers';
 import { calcAllMetrics } from '../../lib/calculations';
 
 const redis = Redis.fromEnv();
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     ASSETS.map(asset =>
       asset.source === 'yahoo'
         ? fetchYahoo(asset.id)
-        : fetchCoinGecko(asset.id)
+        : fetchBinance(asset.id)
     )
   );
 
