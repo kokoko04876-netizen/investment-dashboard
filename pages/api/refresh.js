@@ -2,7 +2,7 @@
 
 import { Redis } from '@upstash/redis';
 import { ASSETS } from '../../lib/assets';
-import { fetchYahoo, fetchBinance } from '../../lib/fetchers';
+import { fetchYahoo } from '../../lib/fetchers';
 import { calcAllMetrics } from '../../lib/calculations';
 
 const redis = Redis.fromEnv();
@@ -18,9 +18,7 @@ export default async function handler(req, res) {
   // 所有標的並行抓取，加快執行速度
   const settled = await Promise.allSettled(
     ASSETS.map(asset =>
-      asset.source === 'yahoo'
-        ? fetchYahoo(asset.id)
-        : fetchBinance(asset.id)
+      fetchYahoo(asset.id)
     )
   );
 
