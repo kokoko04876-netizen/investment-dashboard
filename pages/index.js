@@ -45,8 +45,8 @@ export default function Home() {
     }
   };
 
-  // 只顯示成功抓取的標的（有 error 欄位的隱藏在表格外）
-  const assets = data?.assets?.filter(a => !a.error) ?? [];
+  // 顯示所有標的（失敗的顯示 N/A）
+  const assets = data?.assets ?? [];
 
   return (
     <>
