@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 讓所有頁面預設使用深色背景 */
+body {
+  background-color: #0a0e1a;
+  color: #e5e7eb;
+}
