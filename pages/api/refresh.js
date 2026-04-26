@@ -1,10 +1,13 @@
-// 每日排程 API：抓取所有標的資料並寫入 Vercel KV
+// 每日排程 API：抓取所有標的資料並寫入 Upstash Redis
 // Vercel Cron 每日 UTC 00:00（台灣時間 08:00）以 GET 呼叫此路由
 
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 import { ASSETS } from '../../lib/assets';
 import { fetchYahoo, fetchCoinGecko } from '../../lib/fetchers';
 import { calcAllMetrics } from '../../lib/calculations';
+
+// Redis.fromEnv() 自動讀取 UPSTASH_REDIS_REST_URL 和 UPSTASH_REDIS_REST_TOKEN
+const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
   // 允許 GET（Vercel Cron 預設）和 POST（手動測試）
@@ -30,7 +33,6 @@ export default async function handler(req, res) {
         category: asset.category,
         returns,
         risk: { volatility, maxDrawdown, sharpe },
-        // 只保留最近 120 個月（10 年）供圖表使用
         priceHistory: priceHistory.slice(-120),
       });
       successCount++;
@@ -56,8 +58,8 @@ export default async function handler(req, res) {
     assets: results,
   };
 
-  // 存入 KV，TTL 7 天（防止 Cron 失敗時資料消失）
-  await kv.set('dashboard', payload, { ex: 7 * 24 * 60 * 60 });
+  // 存入 Redis，TTL 7 天
+  await redis.set('dashboard', payload, { ex: 7 * 24 * 60 * 60 });
 
   return res.status(200).json({
     success:   true,
