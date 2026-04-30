@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import ReturnsTable from '../components/ReturnsTable';
 import RiskTable    from '../components/RiskTable';
 import PriceChart   from '../components/PriceChart';
@@ -69,15 +70,29 @@ export default function Home() {
                 最後更新：{formatLastUpdate(data?.lastUpdate)}
               </p>
             </div>
-            <button
-              onClick={handleRefresh}
-              disabled={refreshing || loading}
-              className="self-start sm:self-auto px-4 py-2 bg-emerald-700 hover:bg-emerald-600
-                         disabled:opacity-40 disabled:cursor-not-allowed
-                         text-white text-sm rounded-lg transition-colors"
-            >
-              {refreshing ? '更新中…' : '重新整理資料'}
-            </button>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/crypto-strategy"
+                className="px-4 py-2 bg-indigo-700 hover:bg-indigo-600 text-white text-sm rounded-lg transition-colors"
+              >
+                Crypto Strategy
+              </Link>
+              <Link
+                href="/silver-bullet"
+                className="px-4 py-2 bg-violet-700 hover:bg-violet-600 text-white text-sm rounded-lg transition-colors"
+              >
+                Silver Bullet
+              </Link>
+              <button
+                onClick={handleRefresh}
+                disabled={refreshing || loading}
+                className="px-4 py-2 bg-emerald-700 hover:bg-emerald-600
+                           disabled:opacity-40 disabled:cursor-not-allowed
+                           text-white text-sm rounded-lg transition-colors"
+              >
+                {refreshing ? '更新中…' : '重新整理資料'}
+              </button>
+            </div>
           </header>
 
           {/* ── 載入中 ── */}
