@@ -77,6 +77,12 @@ export default function Home() {
               >
                 Crypto Strategy
               </Link>
+              <Link
+                href="/silver-bullet"
+                className="px-4 py-2 bg-violet-700 hover:bg-violet-600 text-white text-sm rounded-lg transition-colors"
+              >
+                Silver Bullet
+              </Link>
               <button
                 onClick={handleRefresh}
                 disabled={refreshing || loading}

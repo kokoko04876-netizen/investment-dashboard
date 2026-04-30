@@ -140,15 +140,23 @@ export default function CryptoStrategy() {
                 DCA signals · RSI · Moving averages · Updated: {formatDate(data?.generatedAt)}
               </p>
             </div>
-            <button
-              onClick={loadData}
-              disabled={loading}
-              className="self-start sm:self-auto px-4 py-2 bg-indigo-700 hover:bg-indigo-600
-                         disabled:opacity-40 disabled:cursor-not-allowed
-                         text-white text-sm rounded-lg transition-colors"
-            >
+            <div className="flex items-center gap-3">
+              <Link
+                href="/silver-bullet"
+                className="px-4 py-2 bg-violet-700 hover:bg-violet-600 text-white text-sm rounded-lg transition-colors"
+              >
+                Silver Bullet
+              </Link>
+              <button
+                onClick={loadData}
+                disabled={loading}
+                className="px-4 py-2 bg-indigo-700 hover:bg-indigo-600
+                           disabled:opacity-40 disabled:cursor-not-allowed
+                           text-white text-sm rounded-lg transition-colors"
+              >
               {loading ? 'Loading…' : 'Refresh'}
-            </button>
+              </button>
+            </div>
           </header>
 
           {/* Loading */}
