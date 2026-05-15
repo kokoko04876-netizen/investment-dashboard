@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import ReturnsTable from '../components/ReturnsTable';
-import RiskTable    from '../components/RiskTable';
-import PriceChart   from '../components/PriceChart';
+import ReturnsTable    from '../components/ReturnsTable';
+import RiskTable       from '../components/RiskTable';
+import PriceChart      from '../components/PriceChart';
+import ComparisonChart from '../components/ComparisonChart';
 
 function formatLastUpdate(iso) {
   if (!iso) return '—';
@@ -135,6 +136,17 @@ export default function Home() {
                   風險指標
                 </h2>
                 <RiskTable assets={assets} />
+              </section>
+
+              <section>
+                <h2 className="text-base font-medium text-gray-400 uppercase tracking-widest mb-3">
+                  圖表比對
+                </h2>
+                <ComparisonChart data={(() => {
+                  const m = {};
+                  assets.forEach(a => { if (a.priceHistory?.length) m[a.id] = a.priceHistory; });
+                  return m;
+                })()} />
               </section>
 
               <section>
